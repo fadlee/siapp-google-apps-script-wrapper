@@ -11,20 +11,20 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             line-height: 1.6;
             color: #333;
             overflow-x: hidden;
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         /* Header */
         header {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
@@ -37,36 +37,36 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
-        
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        
+
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
             text-decoration: none;
             color: white;
         }
-        
+
         nav ul {
             list-style: none;
             display: flex;
             gap: 2rem;
         }
-        
+
         nav a {
             color: white;
             text-decoration: none;
             transition: opacity 0.3s;
         }
-        
+
         nav a:hover {
             opacity: 0.8;
         }
-        
+
         .cta-header {
             background: rgba(255,255,255,0.2);
             padding: 0.5rem 1rem;
@@ -75,11 +75,11 @@
             color: white;
             transition: background 0.3s;
         }
-        
+
         .cta-header:hover {
             background: rgba(255,255,255,0.3);
         }
-        
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
@@ -89,7 +89,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         .hero::before {
             content: '';
             position: absolute;
@@ -100,19 +100,19 @@
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
             opacity: 0.3;
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 2;
         }
-        
+
         .hero h1 {
             font-size: 3.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
             line-height: 1.2;
         }
-        
+
         .hero p {
             font-size: 1.3rem;
             margin-bottom: 2rem;
@@ -121,14 +121,14 @@
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         .cta-buttons {
             display: flex;
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
         }
-        
+
         .btn {
             display: inline-block;
             padding: 1rem 2rem;
@@ -138,49 +138,49 @@
             transition: all 0.3s ease;
             font-size: 1.1rem;
         }
-        
+
         .btn-primary {
             background: white;
             color: #22c55e;
         }
-        
+
         .btn-primary:hover {
             background: #f8f9ff;
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        
+
         .btn-secondary {
             background: rgba(255,255,255,0.2);
             color: white;
             border: 2px solid rgba(255,255,255,0.3);
         }
-        
+
         .btn-secondary:hover {
             background: rgba(255,255,255,0.3);
             transform: translateY(-2px);
         }
-        
+
         /* Features Section */
         .features {
             padding: 100px 0;
             background: #f8f9fa;
         }
-        
+
         .section-title {
             text-align: center;
             font-size: 2.5rem;
             margin-bottom: 3rem;
             color: #333;
         }
-        
+
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 4rem;
         }
-        
+
         .feature-card {
             background: white;
             padding: 2rem;
@@ -189,71 +189,71 @@
             transition: transform 0.3s, box-shadow 0.3s;
             text-align: center;
         }
-        
+
         .feature-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
-        
+
         .feature-icon {
             font-size: 3rem;
             margin-bottom: 1rem;
         }
-        
+
         .feature-card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
             color: #333;
         }
-        
+
         .feature-card p {
             color: #666;
             line-height: 1.6;
         }
-        
+
         /* Stats Section */
         .stats {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: white;
             padding: 80px 0;
         }
-        
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
             text-align: center;
         }
-        
+
         .stat-number {
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 0.5rem;
         }
-        
+
         .stat-label {
             font-size: 1.2rem;
             opacity: 0.9;
         }
-        
+
         /* FAQ Section */
         .faq {
             padding: 100px 0;
             background: white;
         }
-        
+
         .faq-container {
             max-width: 800px;
             margin: 0 auto;
         }
-        
+
         .faq-item {
             margin-bottom: 1rem;
             border: 1px solid #e9ecef;
             border-radius: 10px;
             overflow: hidden;
         }
-        
+
         .faq-question {
             background: #f8f9fa;
             padding: 1.5rem;
@@ -264,23 +264,23 @@
             align-items: center;
             transition: background 0.3s;
         }
-        
+
         .faq-question:hover {
             background: #e9ecef;
         }
-        
+
         .faq-answer {
             padding: 1.5rem;
             border-top: 1px solid #e9ecef;
             color: #666;
             line-height: 1.7;
         }
-        
+
         .faq-toggle {
             font-size: 1.2rem;
             transition: transform 0.3s;
         }
-        
+
         /* CTA Section */
         .cta-section {
             background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
@@ -288,73 +288,73 @@
             padding: 80px 0;
             text-align: center;
         }
-        
+
         .cta-section h2 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
         }
-        
+
         .cta-section p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
             opacity: 0.9;
         }
-        
+
         /* Footer */
         footer {
             background: #2c3e50;
             color: white;
             padding: 50px 0 20px;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
-        
+
         .footer-section h3 {
             margin-bottom: 1rem;
         }
-        
+
         .footer-section a {
             color: #bdc3c7;
             text-decoration: none;
             transition: color 0.3s;
         }
-        
+
         .footer-section a:hover {
             color: white;
         }
-        
+
         .footer-bottom {
             border-top: 1px solid #34495e;
             padding-top: 1rem;
             text-align: center;
             color: #bdc3c7;
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
+
             .hero p {
                 font-size: 1.1rem;
             }
-            
+
             .cta-buttons {
                 flex-direction: column;
                 align-items: center;
             }
-            
+
             nav ul {
                 display: none;
             }
         }
-        
+
         /* Animations */
         @keyframes fadeInUp {
             from {
@@ -366,7 +366,7 @@
                 transform: translateY(0);
             }
         }
-        
+
         .fade-in-up {
             animation: fadeInUp 0.8s ease-out;
         }
@@ -385,7 +385,7 @@
                         <li><a href="#contact">Kontak</a></li>
                     </ul>
                 </nav>
-                <a href="/cp/" class="cta-header">Panel Admin</a>
+                <a href="/form/" class="cta-header">Daftarkan App</a>
             </div>
         </div>
     </header>
@@ -397,7 +397,7 @@
                 <h1>Platform URL Singkat untuk Google Apps Script</h1>
                 <p>Ubah URL panjang Google Apps Script Anda menjadi URL pendek yang mudah diingat! Dengan SiApp, Anda dapat membuat URL kustom, mengatur nama aplikasi, dan mengelola ikon untuk proyek Apps Script Anda dengan mudah.</p>
                 <div class="cta-buttons">
-                    <a href="/cp/" class="btn btn-primary">Mulai Sekarang</a>
+                    <a href="/form/" class="btn btn-primary">Daftarkan Aplikasi</a>
                     <a href="#features" class="btn btn-secondary">Pelajari Lebih Lanjut</a>
                 </div>
             </div>
@@ -481,7 +481,7 @@
                         SiApp adalah platform untuk memperpendek URL Google Apps Script yang panjang menjadi URL yang mudah diingat dan dapat dikustomisasi. Anda dapat mengatur nama aplikasi, ikon, dan tema untuk proyek Apps Script Anda.
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Bagaimana cara menggunakan SiApp?</span>
@@ -491,7 +491,7 @@
                         Mudah! Cukup masukkan URL panjang Google Apps Script Anda, pilih nama URL pendek yang diinginkan, atur nama aplikasi dan ikon, lalu aplikasi Anda siap diakses dengan URL yang mudah diingat.
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Bagaimana setting doGet() di Apps Script agar bisa jalan di iframe?</span>
@@ -511,7 +511,7 @@
                         }</code>
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Apakah ada panel admin untuk mengelola aplikasi?</span>
@@ -521,7 +521,7 @@
                         Ya! Panel admin di /cp/ menyediakan dashboard lengkap untuk mengelola semua URL Apps Script Anda, melihat statistik akses, mengatur konfigurasi, dan menambahkan aplikasi baru dengan mudah.
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Apakah mendukung Progressive Web App (PWA)?</span>
@@ -531,7 +531,7 @@
                         Tentu! SiApp secara otomatis menghasilkan manifest.json, service worker, dan konfigurasi PWA untuk setiap aplikasi Apps Script Anda. Aplikasi akan tampil seperti aplikasi native di perangkat mobile.
                     </div>
                 </div>
-                
+
                 <div class="faq-item">
                     <div class="faq-question">
                         <span>Bisakah saya mengkustomisasi tampilan aplikasi?</span>
@@ -550,7 +550,7 @@
         <div class="container">
             <h2>Siap Memulai?</h2>
             <p>Bergabung dengan ribuan developer yang mempercayai SiApp untuk memperpendek URL Google Apps Script mereka.</p>
-            <a href="/cp/" class="btn btn-primary">Buka Panel Admin</a>
+            <a href="/form/" class="btn btn-primary">Daftarkan Aplikasi Sekarang</a>
         </div>
     </section>
 
@@ -564,7 +564,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Platform</h3>
-                    <p><a href="/cp/">Panel Admin</a></p>
+                    <p><a href="/form/">Daftarkan Aplikasi</a></p>
                     <p><a href="#features">Fitur</a></p>
                     <p><a href="#faq">FAQ</a></p>
                 </div>
@@ -573,13 +573,13 @@
                     <p><a href="/docs-apps-script.html">Panduan Apps Script</a></p>
                     <p><a href="/data.json">Dokumentasi API</a></p>
                     <p><a href="/template/">Template</a></p>
-                    <p><a href="/cp/">Dashboard</a></p>
+                    <p><a href="/form/">Daftarkan App</a></p>
                 </div>
                 <div class="footer-section">
                     <h3>Dukungan</h3>
                     <p><a href="#faq">Pusat Bantuan</a></p>
                     <p><a href="mailto:support@siapp.example">Hubungi Kami</a></p>
-                    <p><a href="/cp/">Status Sistem</a></p>
+                    <p><a href="/form/">Daftarkan App</a></p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -595,7 +595,7 @@
                 const item = question.parentElement;
                 const answer = item.querySelector('.faq-answer');
                 const toggle = question.querySelector('.faq-toggle');
-                
+
                 if (answer.style.display === 'block') {
                     answer.style.display = 'none';
                     toggle.textContent = '+';
@@ -603,7 +603,7 @@
                     // Close other FAQ items
                     document.querySelectorAll('.faq-answer').forEach(a => a.style.display = 'none');
                     document.querySelectorAll('.faq-toggle').forEach(t => t.textContent = '+');
-                    
+
                     answer.style.display = 'block';
                     toggle.textContent = '−';
                 }
