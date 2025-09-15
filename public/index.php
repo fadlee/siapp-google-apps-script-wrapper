@@ -75,7 +75,7 @@ if (preg_match('/^([a-zA-Z0-9-_]+)\/(manifest\.json|icons\/.*|sw\.js)$/', $route
         // Handle different asset types
         if ($assetPath === 'sw.js') {
             // Service worker
-            $templatePath = __DIR__ . '/template/sw.js';
+            $templatePath = __DIR__ . '/../template/sw.js';
             $rendered = loadTemplate($templatePath, $app);
 
             if ($rendered) {
@@ -88,7 +88,7 @@ if (preg_match('/^([a-zA-Z0-9-_]+)\/(manifest\.json|icons\/.*|sw\.js)$/', $route
             }
         } elseif ($assetPath === 'manifest.json') {
             // Manifest file
-            $templatePath = __DIR__ . '/template/manifest.json';
+            $templatePath = __DIR__ . '/../template/manifest.json';
             if (file_exists($templatePath)) {
                 $rendered = loadTemplate($templatePath, $app);
                 header('Content-Type: application/json; charset=utf-8');
@@ -112,7 +112,7 @@ if (preg_match('/^([a-zA-Z0-9-_]+)\/(manifest\.json|icons\/.*|sw\.js)$/', $route
         } elseif (preg_match('/^icons\/(.+)$/', $assetPath, $iconMatches)) {
             // Icon files
             $iconFile = $iconMatches[1];
-            $iconPath = __DIR__ . '/template/icons/' . $iconFile;
+            $iconPath = __DIR__ . '/../template/icons/' . $iconFile;
 
             if (file_exists($iconPath)) {
                 $ext = pathinfo($iconFile, PATHINFO_EXTENSION);
