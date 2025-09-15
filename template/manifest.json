@@ -1,0 +1,27 @@
+{
+  "name": "{{APP_NAME}}",
+  "short_name": "{{APP_SHORT_NAME}}",
+  "description": "{{APP_NAME}} - SiApp Application",
+  "start_url": "/{{APP_SLUG}}/",
+  "scope": "/{{APP_SLUG}}/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#007acc",
+  "lang": "id",
+  "icons": [
+    {
+      "src": "/{{APP_SLUG}}/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/{{APP_SLUG}}/icons/icon.svg",
+      "sizes": "120x120",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["productivity", "utilities"],
+  "shortcuts": []
+}

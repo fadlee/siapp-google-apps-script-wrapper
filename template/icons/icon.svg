@@ -1,0 +1,8 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="120" height="120" rx="16" fill="#007acc"/>
+  <circle cx="60" cy="35" r="15" fill="white"/>
+  <rect x="30" y="55" width="60" height="8" rx="4" fill="white"/>
+  <rect x="30" y="68" width="45" height="8" rx="4" fill="white"/>
+  <rect x="30" y="81" width="50" height="8" rx="4" fill="white"/>
+  <text x="60" y="105" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10">{{APP_SHORT_NAME}}</text>
+</svg>

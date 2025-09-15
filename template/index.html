@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{APP_NAME}}</title>
+        <link rel="manifest" href="{{APP_SLUG}}/manifest.json" />
+        <link rel="icon" href="{{APP_SLUG}}/icons/icon.svg" type="image/svg+xml" />
+        <meta name="theme-color" content="#ffffff" />
+
+        <!-- Preload untuk mempercepat loading -->
+        <link rel="preconnect" href="https://script.google.com" />
+        <link rel="preconnect" href="https://script.googleusercontent.com" />
+        <link rel="dns-prefetch" href="https://script.google.com" />
+        <link rel="dns-prefetch" href="https://script.googleusercontent.com" />
+        <style>
+            body,
+            html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+                font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #ffffff;
+                color: #333333;
+            }
+            #splash {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                width: 100%;
+                text-align: center;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            #splash img {
+                width: 120px;
+                height: 120px;
+                margin-bottom: 30px;
+                border-radius: 12px;
+                box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+            #loading-text {
+                font-size: 16px;
+                font-weight: 400;
+                margin-bottom: 30px;
+                min-height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                animation: fadeIn 0.5s ease-in forwards;
+                color: #666666;
+            }
+            @keyframes fadeIn {
+                to {
+                    opacity: 1;
+                }
+            }
+            .spinner {
+                width: 32px;
+                height: 32px;
+                border: 3px solid #f0f0f0;
+                border-top: 3px solid #007acc;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin-bottom: 25px;
+            }
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+            .progress-bar {
+                width: 200px;
+                height: 4px;
+                background: #f0f0f0;
+                border-radius: 2px;
+                overflow: hidden;
+                margin-top: 10px;
+            }
+            .progress-fill {
+                height: 100%;
+                background: #007acc;
+                border-radius: 2px;
+                width: 0%;
+                transition: width 0.3s ease;
+            }
+            #appframe {
+                display: none;
+                border: none;
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="splash">
+            <img src="{{APP_SLUG}}/icons/icon.svg" alt="Logo" />
+            <div class="spinner"></div>
+            <div id="loading-text">Sabar ya kak...</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+        </div>
+        <iframe
+            id="appframe"
+            src=""
+            loading="eager"
+            referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+
+        <script>
+            // Deteksi apakah sudah pernah dimuat sebelumnya
+            const isFirstLoad = !localStorage.getItem("app-loaded-before");
+
+            // Array pesan loading untuk pertama kali
+            const firstLoadMessages = [
+                "Sabar ya kak...",
+                "Tunggu ya kak...",
+                "Sudah hampir...",
+                "Sebentar lagi...",
+                "Hampir selesai...",
+                "Tinggal sedikit lagi...",
+            ];
+
+            // Array pesan loading untuk load berikutnya (lebih cepat)
+            const cachedLoadMessages = [
+                "Loading dari cache...",
+                "Hampir siap...",
+                "Sebentar ya...",
+                "Tinggal sedikit...",
+            ];
+
+            const loadingMessages = isFirstLoad
+                ? firstLoadMessages
+                : cachedLoadMessages;
+
+            let currentMessageIndex = 0;
+            let progress = 0;
+            let messageInterval;
+            let progressInterval;
+            let isAppLoaded = false;
+            let minLoadingTime = isFirstLoad ? 3000 : 1500; // 3 detik untuk pertama kali, 1.5 detik untuk cached
+            let startTime;
+
+            function updateLoadingMessage() {
+                const loadingText = document.getElementById("loading-text");
+                loadingText.style.opacity = "0";
+
+                setTimeout(() => {
+                    loadingText.textContent =
+                        loadingMessages[currentMessageIndex];
+                    loadingText.style.opacity = "1";
+                    currentMessageIndex =
+                        (currentMessageIndex + 1) % loadingMessages.length;
+                }, 250);
+            }
+
+            function updateProgress() {
+                const progressBar = document.getElementById("progress");
+                const increment = Math.random() * 15 + 5; // Random increment 5-20%
+                progress = Math.min(progress + increment, 95); // Max 95% until app loads
+                progressBar.style.width = progress + "%";
+
+                if (progress >= 95) {
+                    clearInterval(progressInterval);
+                }
+            }
+
+            function startLoading() {
+                // Update pesan setiap 2-4 detik
+                messageInterval = setInterval(
+                    updateLoadingMessage,
+                    2500 + Math.random() * 1500,
+                );
+
+                // Update progress bar setiap 300-800ms
+                progressInterval = setInterval(
+                    updateProgress,
+                    400 + Math.random() * 400,
+                );
+
+                // Mulai loading progress
+                updateProgress();
+            }
+
+            function checkAndFinishLoading() {
+                const currentTime = Date.now();
+                const elapsedTime = currentTime - startTime;
+
+                // Pastikan minimum loading time sudah tercapai dan app sudah loaded
+                if (elapsedTime >= minLoadingTime && isAppLoaded) {
+                    finishLoading();
+                } else if (elapsedTime >= minLoadingTime) {
+                    // Jika minimum time sudah lewat tapi app belum load, tunggu app load
+                    // Progress bar akan tetap di 95% sampai app ready
+                }
+            }
+
+            function finishLoading() {
+                clearInterval(messageInterval);
+                clearInterval(progressInterval);
+
+                // Set pesan akhir dan progress 100%
+                const loadingText = document.getElementById("loading-text");
+                const progressBar = document.getElementById("progress");
+
+                loadingText.style.opacity = "0";
+                setTimeout(() => {
+                    loadingText.textContent = "Siap digunakan!";
+                    loadingText.style.opacity = "1";
+                    progressBar.style.width = "100%";
+
+                    // Langsung hide splash dan show app tanpa delay
+                    setTimeout(() => {
+                        document.getElementById("splash").style.display =
+                            "none";
+                        document.getElementById("appframe").style.display =
+                            "block";
+
+                        // Tandai bahwa aplikasi sudah pernah dimuat
+                        localStorage.setItem("app-loaded-before", "true");
+                    }, 500);
+                }, 250);
+            }
+
+            window.addEventListener("load", () => {
+                startTime = Date.now();
+                startLoading();
+
+                // Mulai memuat iframe bersamaan dengan splash screen
+                const frame = document.getElementById("appframe");
+
+                // Preload iframe dengan loading="eager" dan optimasi
+                frame.loading = "eager";
+                frame.src = "{{APP_URL}}";
+
+                // Event listener ketika iframe selesai dimuat
+                frame.addEventListener("load", () => {
+                    isAppLoaded = true;
+                    checkAndFinishLoading();
+                });
+
+                // Event listener untuk error handling
+                frame.addEventListener("error", () => {
+                    console.log("Iframe error, but continuing...");
+                    isAppLoaded = true;
+                    checkAndFinishLoading();
+                });
+
+                // Fallback: jika loading terlalu lama, paksa selesai setelah 8 detik
+                setTimeout(() => {
+                    if (!isAppLoaded) {
+                        isAppLoaded = true;
+                        checkAndFinishLoading();
+                    }
+                }, 8000);
+
+                // Check setiap detik apakah sudah bisa finish loading
+                const checkInterval = setInterval(() => {
+                    checkAndFinishLoading();
+                    if (
+                        isAppLoaded &&
+                        Date.now() - startTime >= minLoadingTime
+                    ) {
+                        clearInterval(checkInterval);
+                    }
+                }, 1000);
+            });
+
+            if ("serviceWorker" in navigator) {
+                // Register service worker with slug-specific scope
+                const swPath = '{{APP_SLUG}}/sw.js';
+                const swScope = '/{{APP_SLUG}}/';
+                
+                navigator.serviceWorker
+                    .register(swPath, { scope: swScope })
+                    .then((registration) => {
+                        console.log('SW registered for {{APP_SLUG}}:', registration.scope);
+                    })
+                    .catch((err) => console.log('SW registration failed for {{APP_SLUG}}:', err));
+            }
+        </script>
+    </body>
+</html>
