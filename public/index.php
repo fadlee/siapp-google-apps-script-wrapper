@@ -241,7 +241,7 @@ if (empty($route) || $route === 'index.php') {
             echo json_encode($app, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         } else {
             // Serve HTML template with replaced placeholders
-            $templatePath = __DIR__ . '/template/index.html';
+            $templatePath = __DIR__ . '/../template/index.html';
 
             // Prepare template data with additional fields
             $templateData = $app;
