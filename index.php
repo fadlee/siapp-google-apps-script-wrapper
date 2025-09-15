@@ -159,109 +159,48 @@ if (preg_match('/^([a-zA-Z0-9-_]+)\/(manifest\.json|icons\/.*|sw\.js)$/', $route
 
 // Handle routing
 if (empty($route) || $route === 'index.php') {
-    // Home page - show available apps
-    ?><!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SiApp - Application Manager</title>
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            line-height: 1.6;
+    // Home page - serve landing page
+    $landingPage = __DIR__ . '/landing.html';
+    if (file_exists($landingPage)) {
+        header('Content-Type: text/html; charset=utf-8');
+        readfile($landingPage);
+        exit;
+    } else {
+        // Fallback if landing page doesn't exist
+        echo '<h1>Welcome to SiApp</h1><p>Landing page not found. <a href="/cp/">Go to Control Panel</a></p>';
+        exit;
+    }
+} elseif ($route === 'cp' || strpos($route, 'cp/') === 0) {
+    // Control panel routes
+    if ($route === 'cp') {
+        // Redirect /cp to /cp/
+        header('Location: /cp/', true, 301);
+        exit;
+    } elseif ($route === 'cp/') {
+        // Serve control panel
+        $cpIndex = __DIR__ . '/cp/index.php';
+        if (file_exists($cpIndex)) {
+            include $cpIndex;
+            exit;
+        } else {
+            http_response_code(500);
+            echo 'Control panel not found';
+            exit;
         }
-        .app-card {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px 0;
-            background: #f9f9f9;
-            transition: box-shadow 0.2s;
-        }
-        .app-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .app-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        .app-slug {
-            color: #666;
-            font-family: monospace;
-            background: #e0e0e0;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-        .json-link {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: #007cba;
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .json-link:hover {
-            background: #005a87;
-        }
-        .available-slugs {
-            background: #f0f8ff;
-            padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <h1>🚀 SiApp - Application Manager</h1>
-    <p>Welcome to SiApp! Here are the available applications:</p>
-    
-    <?php if ($appData): ?>
-        <?php foreach ($appData as $app): ?>
-            <div class="app-card">
-                <div class="app-name"><?= htmlspecialchars($app['APP_NAME']) ?></div>
-                <p><strong>Short Name:</strong> <?= htmlspecialchars($app['APP_SHORT_NAME']) ?></p>
-                <p><strong>Slug:</strong> <span class="app-slug"><?= htmlspecialchars($app['APP_SLUG']) ?></span></p>
-                <a href="<?= htmlspecialchars($app['APP_SLUG']) ?>" class="json-link">View App</a>
-                <a href="<?= htmlspecialchars($app['APP_SLUG']) ?>?format=json" class="json-link" style="background: #28a745;">View JSON</a>
-            </div>
-        <?php endforeach; ?>
-        
-        <div class="available-slugs">
-            <h3>📋 Available Routes:</h3>
-            <ul>
-                <?php foreach (getAllSlugs($appData) as $slug): ?>
-                    <li>
-                        <strong><?= htmlspecialchars($slug) ?> App:</strong>
-                        <br>
-                        <code>siapp.test/<?= htmlspecialchars($slug) ?></code> - HTML App
-                        <br>
-                        <code>siapp.test/<?= htmlspecialchars($slug) ?>?format=json</code> - JSON Data
-                        <br>
-                        <code>siapp.test/<?= htmlspecialchars($slug) ?>/sw.js</code> - Service Worker
-                        <br>
-                        <code>siapp.test/<?= htmlspecialchars($slug) ?>/manifest.json</code> - Web App Manifest
-                        <br>
-                        <code>siapp.test/<?= htmlspecialchars($slug) ?>/icons/icon.svg</code> - App Icon
-                        <br><br>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        </div>
-    <?php else: ?>
-        <div class="app-card">
-            <p>⚠️ No applications found. Please check your data.json file.</p>
-        </div>
-    <?php endif; ?>
-</body>
-</html>
-    <?php
+    }
+    // Other /cp/* routes can be handled here in the future
+} elseif ($route === 'docs-apps-script.html') {
+    // Serve Apps Script documentation
+    $docsFile = __DIR__ . '/docs-apps-script.html';
+    if (file_exists($docsFile)) {
+        header('Content-Type: text/html; charset=utf-8');
+        readfile($docsFile);
+        exit;
+    } else {
+        http_response_code(404);
+        echo 'Documentation not found';
+        exit;
+    }
 } else {
     // Try to find app by slug dynamically
     $app = findAppBySlug($route, $appData);

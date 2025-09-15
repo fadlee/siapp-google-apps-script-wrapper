@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panduan Setup Google Apps Script - SiApp</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .step {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-left: 4px solid #667eea;
+        }
+        .step h3 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Monaco', 'Menlo', monospace;
+            margin: 1rem 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-left: 4px solid #fdcb6e;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        .info {
+            background: #e7f3ff;
+            border: 1px solid #bee5eb;
+            border-left: 4px solid #17a2b8;
+            padding: 1rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        .nav-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+        }
+        .nav-link:hover {
+            background: #5a6fd8;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin: 1rem 0;
+        }
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .toc ul {
+            margin: 0;
+            padding-left: 1.5rem;
+        }
+        .toc li {
+            margin: 0.5rem 0;
+        }
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 Panduan Setup Google Apps Script</h1>
+        <p>Panduan lengkap untuk mengintegrasikan proyek Apps Script dengan SiApp</p>
+        <a href="/" class="nav-link">← Kembali ke Homepage</a>
+        <a href="/cp/" class="nav-link">Panel Admin</a>
+    </div>
+
+    <div class="toc">
+        <h3>📋 Daftar Isi</h3>
+        <ul>
+            <li><a href="#overview">Pengantar</a></li>
+            <li><a href="#doget-setup">Setup fungsi doGet()</a></li>
+            <li><a href="#iframe-config">Konfigurasi untuk iframe</a></li>
+            <li><a href="#deployment">Deploy sebagai Web App</a></li>
+            <li><a href="#siapp-integration">Integrasi dengan SiApp</a></li>
+            <li><a href="#troubleshooting">Troubleshooting</a></li>
+            <li><a href="#examples">Contoh Lengkap</a></li>
+        </ul>
+    </div>
+
+    <section id="overview">
+        <h2>📖 Pengantar</h2>
+        <p>SiApp adalah platform yang memungkinkan Anda mengubah URL panjang Google Apps Script menjadi URL pendek yang mudah diingat. Untuk menggunakan SiApp dengan optimal, Anda perlu mengkonfigurasi proyek Apps Script dengan benar.</p>
+        
+        <div class="info">
+            <strong>💡 Contoh URL:</strong><br>
+            <strong>URL Apps Script asli:</strong> https://script.google.com/macros/s/AKfycbxMshNWuqVkwsYNKFWmwlFe7h0rBkJmcuG0trptV7QueTgN9lNut1ibjefQJyQGNxfMcw/exec<br>
+            <strong>URL SiApp:</strong> siapp.test/bimbel
+        </div>
+    </section>
+
+    <section id="doget-setup">
+        <h2>⚙️ Setup Fungsi doGet()</h2>
+        
+        <div class="step">
+            <h3>Langkah 1: Buat Fungsi doGet()</h3>
+            <p>Fungsi <code>doGet()</code> adalah entry point untuk web app Apps Script. Fungsi ini akan dipanggil ketika ada request HTTP GET ke URL web app Anda.</p>
+            
+            <div class="code-block">
+function doGet(e) {
+  // Return HTML response
+  return HtmlService.createTemplateFromFile('index')
+    .evaluate()
+    .setTitle('Nama Aplikasi Anda')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Langkah 2: Buat File HTML</h3>
+            <p>Buat file HTML untuk antarmuka aplikasi Anda. Klik menu <strong>File > New > HTML File</strong> dan beri nama <strong>index</strong>.</p>
+            
+            <div class="code-block">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Aplikasi Saya&lt;/title&gt;
+  &lt;style&gt;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;h1&gt;Selamat Datang di Aplikasi Saya&lt;/h1&gt;
+    &lt;p&gt;Ini adalah aplikasi Google Apps Script yang dijalankan melalui SiApp.&lt;/p&gt;
+    
+    &lt;!-- Konten aplikasi Anda di sini --&gt;
+    
+  &lt;/div&gt;
+  
+  &lt;script&gt;
+    // JavaScript untuk aplikasi Anda
+    console.log('Aplikasi berhasil dimuat!');
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+        </div>
+    </section>
+
+    <section id="iframe-config">
+        <h2>🖼️ Konfigurasi untuk iframe</h2>
+        
+        <div class="step">
+            <h3>Mengapa Perlu Konfigurasi iframe?</h3>
+            <p>SiApp menggunakan template HTML yang memuat aplikasi Apps Script dalam iframe. Secara default, Google Apps Script memblokir loading dalam iframe untuk keamanan.</p>
+        </div>
+
+        <div class="step">
+            <h3>setXFrameOptionsMode()</h3>
+            <p>Untuk mengizinkan aplikasi dimuat dalam iframe, gunakan method <code>setXFrameOptionsMode()</code>:</p>
+            
+            <div class="code-block">
+// Mengizinkan semua iframe (untuk SiApp)
+.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+
+// Atau hanya domain tertentu (lebih aman)
+.setXFrameOptionsMode(HtmlService.XFrameOptionsMode.DEFAULT)
+            </div>
+            
+            <div class="warning">
+                <strong>⚠️ Peringatan Keamanan:</strong><br>
+                <code>ALLOWALL</code> mengizinkan aplikasi dimuat di iframe mana pun. Pastikan aplikasi Anda tidak memiliki data sensitif atau gunakan <code>DEFAULT</code> dengan konfigurasi domain yang tepat.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Penanganan Parameter</h3>
+            <p>Anda dapat menangani parameter URL yang dikirim melalui SiApp:</p>
+            
+            <div class="code-block">
+function doGet(e) {
+  // Ambil parameter dari URL
+  var param1 = e.parameter.param1 || 'default';
+  var param2 = e.parameter.param2 || '';
+  
+  // Buat template dan pass data
+  var template = HtmlService.createTemplateFromFile('index');
+  template.param1 = param1;
+  template.param2 = param2;
+  
+  return template.evaluate()
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+            </div>
+        </div>
+    </section>
+
+    <section id="deployment">
+        <h2>🚀 Deploy sebagai Web App</h2>
+        
+        <div class="step">
+            <h3>Langkah 1: Deploy Web App</h3>
+            <ol>
+                <li>Klik tombol <strong>Deploy</strong> di Apps Script Editor</li>
+                <li>Pilih <strong>New deployment</strong></li>
+                <li>Pilih type: <strong>Web app</strong></li>
+                <li>Atur konfigurasi:
+                    <ul>
+                        <li><strong>Execute as:</strong> Me</li>
+                        <li><strong>Who has access:</strong> Anyone</li>
+                    </ul>
+                </li>
+                <li>Klik <strong>Deploy</strong></li>
+            </ol>
+        </div>
+
+        <div class="step">
+            <h3>Langkah 2: Copy URL Web App</h3>
+            <p>Setelah deploy berhasil, Anda akan mendapat URL seperti ini:</p>
+            
+            <div class="code-block">
+https://script.google.com/macros/s/AKfycbxMshNWuqVkwsYNKFWmwlFe7h0rBkJmcuG0trptV7QueTgN9lNut1ibjefQJyQGNxfMcw/exec
+            </div>
+            
+            <div class="info">
+                <strong>💡 Tips:</strong> Simpan URL ini, Anda akan memasukkannya ke SiApp untuk membuat URL pendek.
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Langkah 3: Test URL</h3>
+            <p>Sebelum menambahkan ke SiApp, test URL Apps Script langsung di browser untuk memastikan berfungsi dengan baik.</p>
+        </div>
+    </section>
+
+    <section id="siapp-integration">
+        <h2>🔗 Integrasi dengan SiApp</h2>
+        
+        <div class="step">
+            <h3>Langkah 1: Akses Panel Admin</h3>
+            <p>Buka <a href="/cp/" target="_blank">Panel Admin SiApp</a> dan login (jika sudah ada fitur login).</p>
+        </div>
+
+        <div class="step">
+            <h3>Langkah 2: Tambah Aplikasi Baru</h3>
+            <p>Untuk saat ini, tambahkan aplikasi baru melalui file <code>data.json</code>:</p>
+            
+            <div class="code-block">
+[
+  {
+    "APP_NAME": "Aplikasi Bimbel",
+    "APP_SLUG": "bimbel",
+    "APP_SHORT_NAME": "Bimbel",
+    "APP_URL": "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec"
+  }
+]
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Langkah 3: Akses Aplikasi</h3>
+            <p>Setelah ditambahkan, aplikasi dapat diakses melalui:</p>
+            <ul>
+                <li><strong>URL Pendek:</strong> siapp.test/bimbel</li>
+                <li><strong>JSON API:</strong> siapp.test/bimbel?format=json</li>
+                <li><strong>PWA Manifest:</strong> siapp.test/bimbel/manifest.json</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="troubleshooting">
+        <h2>🔧 Troubleshooting</h2>
+        
+        <div class="step">
+            <h3>Masalah Umum dan Solusinya</h3>
+            
+            <h4>1. Aplikasi tidak muncul di iframe</h4>
+            <div class="warning">
+                <strong>Penyebab:</strong> X-Frame-Options tidak dikonfigurasi<br>
+                <strong>Solusi:</strong> Pastikan menggunakan <code>setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)</code>
+            </div>
+
+            <h4>2. Error "Script function not found: doGet"</h4>
+            <div class="warning">
+                <strong>Penyebab:</strong> Fungsi doGet() tidak ada atau typo<br>
+                <strong>Solusi:</strong> Pastikan fungsi bernama persis <code>doGet</code> (case-sensitive)
+            </div>
+
+            <h4>3. Aplikasi tidak load setelah deploy</h4>
+            <div class="warning">
+                <strong>Penyebab:</strong> Deployment tidak berhasil atau permission salah<br>
+                <strong>Solusi:</strong> 
+                <ul>
+                    <li>Pastikan "Who has access" diset ke "Anyone"</li>
+                    <li>Try deploy ulang dengan versi baru</li>
+                    <li>Check authorization yang diminta</li>
+                </ul>
+            </div>
+
+            <h4>4. Template file tidak ditemukan</h4>
+            <div class="warning">
+                <strong>Penyebab:</strong> Nama file HTML salah atau tidak ada<br>
+                <strong>Solusi:</strong> Pastikan nama file HTML sesuai dengan yang dipanggil di <code>createTemplateFromFile()</code>
+            </div>
+        </div>
+    </section>
+
+    <section id="examples">
+        <h2>📝 Contoh Lengkap</h2>
+        
+        <div class="step">
+            <h3>Contoh Aplikasi Sederhana</h3>
+            
+            <h4>Code.gs</h4>
+            <div class="code-block">
+function doGet(e) {
+  // Ambil parameter jika ada
+  var name = e.parameter.name || 'Pengunjung';
+  var page = e.parameter.page || 'home';
+  
+  // Buat template dengan data
+  var template = HtmlService.createTemplateFromFile('index');
+  template.userName = name;
+  template.currentPage = page;
+  template.timestamp = new Date().toLocaleString('id-ID');
+  
+  return template.evaluate()
+    .setTitle('Aplikasi Demo SiApp')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// Fungsi helper untuk include file
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+            </div>
+
+            <h4>index.html</h4>
+            <div class="code-block">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;base target="_top"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  &lt;title&gt;Demo SiApp&lt;/title&gt;
+  &lt;?!= include('styles'); ?&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;div class="container"&gt;
+    &lt;h1&gt;Halo, &lt;?= userName ?&gt;!&lt;/h1&gt;
+    &lt;p&gt;Selamat datang di aplikasi demo SiApp.&lt;/p&gt;
+    &lt;p&gt;Halaman aktif: &lt;strong&gt;&lt;?= currentPage ?&gt;&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;Waktu akses: &lt;?= timestamp ?&gt;&lt;/p&gt;
+    
+    &lt;div class="menu"&gt;
+      &lt;a href="?page=home"&gt;Home&lt;/a&gt;
+      &lt;a href="?page=about"&gt;About&lt;/a&gt;
+      &lt;a href="?page=contact"&gt;Contact&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  
+  &lt;?!= include('scripts'); ?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+            </div>
+
+            <h4>styles.html</h4>
+            <div class="code-block">
+&lt;style&gt;
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.menu {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.menu a {
+  padding: 0.5rem 1rem;
+  background: #667eea;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.menu a:hover {
+  background: #5a6fd8;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 1rem;
+  }
+  
+  .menu {
+    flex-direction: column;
+  }
+}
+&lt;/style&gt;
+            </div>
+
+            <h4>scripts.html</h4>
+            <div class="code-block">
+&lt;script&gt;
+// JavaScript untuk aplikasi
+document.addEventListener('DOMContentLoaded', function() {
+  console.log('Aplikasi SiApp siap!');
+  
+  // Tambah event listener untuk menu
+  const menuLinks = document.querySelectorAll('.menu a');
+  menuLinks.forEach(link =&gt; {
+    link.addEventListener('click', function(e) {
+      // Optional: tambah loading indicator
+      console.log('Navigating to:', this.href);
+    });
+  });
+});
+
+// Function untuk interaksi dengan Google Apps Script
+function callGoogleScript(functionName, params) {
+  google.script.run
+    .withSuccessHandler(onSuccess)
+    .withFailureHandler(onFailure)
+    [functionName](params);
+}
+
+function onSuccess(result) {
+  console.log('Success:', result);
+}
+
+function onFailure(error) {
+  console.error('Error:', error);
+}
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <div class="step">
+            <h3>Testing dan Deployment</h3>
+            <ol>
+                <li>Test aplikasi dengan <strong>Run → doGet</strong></li>
+                <li>Deploy sebagai web app</li>
+                <li>Test URL web app di browser</li>
+                <li>Tambahkan ke SiApp melalui data.json</li>
+                <li>Test URL pendek SiApp</li>
+            </ol>
+        </div>
+    </section>
+
+    <div class="info">
+        <h3>🎉 Selesai!</h3>
+        <p>Aplikasi Google Apps Script Anda sekarang sudah terintegrasi dengan SiApp. Pengguna dapat mengakses aplikasi melalui URL pendek yang mudah diingat!</p>
+        <p><a href="/cp/" class="nav-link">Kelola Aplikasi di Panel Admin</a></p>
+    </div>
+
+    <footer style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e9ecef; text-align: center; color: #6c757d;">
+        <p>&copy; 2024 SiApp - Platform URL Singkat untuk Google Apps Script</p>
+        <p>
+            <a href="/" style="color: #667eea;">Homepage</a> | 
+            <a href="/cp/" style="color: #667eea;">Panel Admin</a>
+        </p>
+    </footer>
+</body>
+</html>
