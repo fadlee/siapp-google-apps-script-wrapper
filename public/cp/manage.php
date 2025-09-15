@@ -4,6 +4,10 @@
  */
 
 require_once dirname(__DIR__) . '/../config/AppManager.php';
+require_once dirname(__DIR__) . '/../config/AuthManager.php';
+
+// Ensure user is authenticated
+AuthManager::requireAuth();
 
 // Initialize AppManager
 $appManager = new AppManager();
@@ -92,12 +96,13 @@ if (isset($_GET['edit'])) {
             background: #f5f5f5;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
             color: white;
             padding: 2rem;
             border-radius: 10px;
             text-align: center;
             margin-bottom: 2rem;
+            position: relative;
         }
         .nav-link {
             display: inline-block;
@@ -135,13 +140,13 @@ if (isset($_GET['edit'])) {
         }
         .form-group input:focus, .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+            border-color: #22c55e;
+            box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.1);
         }
         .btn {
             display: inline-block;
             padding: 0.75rem 1.5rem;
-            background: #667eea;
+            background: #22c55e;
             color: white;
             text-decoration: none;
             border: none;
@@ -151,7 +156,7 @@ if (isset($_GET['edit'])) {
             margin-right: 0.5rem;
         }
         .btn:hover {
-            background: #5a6fd8;
+            background: #16a34a;
         }
         .btn-danger {
             background: #dc3545;
@@ -224,7 +229,7 @@ if (isset($_GET['edit'])) {
         .stat-number {
             font-size: 2em;
             font-weight: bold;
-            color: #667eea;
+            color: #22c55e;
         }
         .stat-label {
             color: #6c757d;
@@ -247,6 +252,10 @@ if (isset($_GET['edit'])) {
 </head>
 <body>
     <div class="header">
+        <div style="position: absolute; top: 1rem; right: 2rem; text-align: right;">
+            <span style="color: rgba(255,255,255,0.9); font-size: 0.9em;">Welcome, <?= htmlspecialchars(AuthManager::getUsername()) ?>!</span><br>
+            <a href="logout.php" style="color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.9em;">Logout</a>
+        </div>
         <h1>🚀 Kelola Aplikasi</h1>
         <p>Tambah, edit, dan hapus aplikasi Google Apps Script</p>
         <a href="../" class="nav-link">← Homepage</a>

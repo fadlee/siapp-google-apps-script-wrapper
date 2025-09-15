@@ -174,35 +174,63 @@ if (empty($route) || $route === 'index.php') {
         exit;
     }
 } elseif ($route === 'cp' || strpos($route, 'cp/') === 0) {
-    // Control panel routes
+    // Control panel routes - require authentication for all except login/logout
     if ($route === 'cp') {
         // Redirect /cp to /cp/
         header('Location: /cp/', true, 301);
         exit;
-    } elseif ($route === 'cp/') {
-        // Serve control panel dashboard
-        $cpIndex = __DIR__ . '/cp/index.php';
-        if (file_exists($cpIndex)) {
-            include $cpIndex;
-            exit;
-        } else {
-            http_response_code(500);
-            echo 'Control panel not found';
-            exit;
-        }
-    } elseif ($route === 'cp/manage.php' || $route === 'cp/manage') {
-        // Serve application management page
-        $managePage = __DIR__ . '/cp/manage.php';
-        if (file_exists($managePage)) {
-            include $managePage;
+    } elseif ($route === 'cp/login.php' || $route === 'cp/login') {
+        // Serve login page (no authentication required)
+        $loginPage = __DIR__ . '/cp/login.php';
+        if (file_exists($loginPage)) {
+            include $loginPage;
             exit;
         } else {
             http_response_code(404);
-            echo 'Management page not found';
+            echo 'Login page not found';
             exit;
         }
+    } elseif ($route === 'cp/logout.php' || $route === 'cp/logout') {
+        // Serve logout handler (no authentication required)
+        $logoutPage = __DIR__ . '/cp/logout.php';
+        if (file_exists($logoutPage)) {
+            include $logoutPage;
+            exit;
+        } else {
+            http_response_code(404);
+            echo 'Logout page not found';
+            exit;
+        }
+    } else {
+        // All other CP routes require authentication
+        require_once __DIR__ . '/../config/AuthManager.php';
+        AuthManager::requireAuth();
+
+        if ($route === 'cp/') {
+            // Serve control panel dashboard
+            $cpIndex = __DIR__ . '/cp/index.php';
+            if (file_exists($cpIndex)) {
+                include $cpIndex;
+                exit;
+            } else {
+                http_response_code(500);
+                echo 'Control panel not found';
+                exit;
+            }
+        } elseif ($route === 'cp/manage.php' || $route === 'cp/manage') {
+            // Serve application management page
+            $managePage = __DIR__ . '/cp/manage.php';
+            if (file_exists($managePage)) {
+                include $managePage;
+                exit;
+            } else {
+                http_response_code(404);
+                echo 'Management page not found';
+                exit;
+            }
+        }
+        // Other /cp/* routes can be handled here in the future
     }
-    // Other /cp/* routes can be handled here in the future
 } elseif ($route === 'docs-apps-script.html') {
     // Serve Apps Script documentation
     $docsFile = __DIR__ . '/../views/docs-apps-script.html';
@@ -281,4 +309,3 @@ if (empty($route) || $route === 'index.php') {
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
 }
-?>

@@ -1,8 +1,12 @@
 <?php
 // Control Panel for SiApp Application Manager
 
-// Load AppManager for database operations
+// Load required dependencies
 require_once dirname(__DIR__) . '/../config/AppManager.php';
+require_once dirname(__DIR__) . '/../config/AuthManager.php';
+
+// Ensure user is authenticated (should already be checked by router, but double-check)
+AuthManager::requireAuth();
 
 // Initialize AppManager
 try {
@@ -177,11 +181,22 @@ function getAllSlugs($data = null) {
 </head>
 <body>
     <div class="header">
-        <h1>🚀 Panel Admin SiApp</h1>
-        <p>Dashboard Manajemen Aplikasi Apps Script</p>
-        <a href="../" class="nav-link">← Kembali ke Beranda</a>
-        <a href="manage.php" class="nav-link">➕ Kelola Aplikasi</a>
-        <a href="../docs-apps-script.html" class="nav-link">Panduan Apps Script</a>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div>
+                <h1 style="margin: 0;">🚀 Panel Admin SiApp</h1>
+                <p style="margin: 5px 0 0 0;">Dashboard Manajemen Aplikasi Apps Script</p>
+            </div>
+            <div style="text-align: right;">
+                <span style="color: #666; font-size: 0.9em;">Welcome, <?= htmlspecialchars(AuthManager::getUsername()) ?>!</span>
+                <br>
+                <a href="logout.php" style="color: #dc3545; text-decoration: none; font-size: 0.9em;">Logout</a>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <a href="../" class="nav-link">← Kembali ke Beranda</a>
+            <a href="manage.php" class="nav-link">➕ Kelola Aplikasi</a>
+            <a href="../docs-apps-script.html" class="nav-link">Panduan Apps Script</a>
+        </div>
     </div>
 
     <div class="stats">
