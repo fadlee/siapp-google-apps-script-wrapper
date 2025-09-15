@@ -1,31 +1,34 @@
 <?php
 // Control Panel for SiApp Application Manager
 
-// Load data from parent directory JSON file
-function loadAppData() {
-    $jsonFile = dirname(__DIR__) . '/data.json';
-    if (file_exists($jsonFile)) {
-        $jsonContent = file_get_contents($jsonFile);
-        return json_decode($jsonContent, true);
-    }
-    return null;
+// Load AppManager for database operations
+require_once dirname(__DIR__) . '/../config/AppManager.php';
+
+// Initialize AppManager
+try {
+    $appManager = new AppManager();
+    $appData = $appManager->getAllApps();
+    $stats = $appManager->getStats();
+} catch (Exception $e) {
+    error_log('Control Panel Error: ' . $e->getMessage());
+    $appData = [];
+    $stats = [
+        'total_apps' => 0,
+        'total_slugs' => 0,
+        'active_templates' => 1,
+        'last_updated' => null
+    ];
 }
 
-// Get all available slugs
-function getAllSlugs($data) {
-    if (!$data) return [];
-    
-    $slugs = [];
-    foreach ($data as $app) {
-        if (isset($app['APP_SLUG'])) {
-            $slugs[] = $app['APP_SLUG'];
-        }
+// Helper function for compatibility
+function getAllSlugs($data = null) {
+    global $appManager;
+    try {
+        return $appManager->getAllSlugs();
+    } catch (Exception $e) {
+        return [];
     }
-    return $slugs;
 }
-
-// Load app data
-$appData = loadAppData();
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -177,24 +180,25 @@ $appData = loadAppData();
         <h1>🚀 Panel Admin SiApp</h1>
         <p>Dashboard Manajemen Aplikasi Apps Script</p>
         <a href="../" class="nav-link">← Kembali ke Beranda</a>
+        <a href="manage.php" class="nav-link">➕ Kelola Aplikasi</a>
         <a href="../docs-apps-script.html" class="nav-link">Panduan Apps Script</a>
     </div>
 
     <div class="stats">
         <div class="stat-card">
-            <div class="stat-number"><?= count($appData ?? []) ?></div>
+            <div class="stat-number"><?= $stats['total_apps'] ?></div>
             <div class="stat-label">Aplikasi Aktif</div>
         </div>
         <div class="stat-card">
-            <div class="stat-number"><?= count(getAllSlugs($appData ?? [])) ?></div>
+            <div class="stat-number"><?= $stats['total_slugs'] ?></div>
             <div class="stat-label">Rute Tersedia</div>
         </div>
         <div class="stat-card">
-            <div class="stat-number">1</div>
+            <div class="stat-number"><?= $stats['active_templates'] ?></div>
             <div class="stat-label">Template Aktif</div>
         </div>
     </div>
-    
+
     <?php if ($appData): ?>
         <h2>📱 Aplikasi Terdaftar</h2>
         <?php foreach ($appData as $app): ?>
@@ -205,7 +209,7 @@ $appData = loadAppData();
                 <?php if (isset($app['APP_URL'])): ?>
                     <p><strong>Source URL:</strong> <a href="<?= htmlspecialchars($app['APP_URL']) ?>" target="_blank" rel="noopener"><?= htmlspecialchars($app['APP_URL']) ?></a></p>
                 <?php endif; ?>
-                
+
                 <div class="app-actions">
                     <a href="../<?= htmlspecialchars($app['APP_SLUG']) ?>" class="btn btn-primary" target="_blank">Lihat App</a>
                     <a href="../<?= htmlspecialchars($app['APP_SLUG']) ?>?format=json" class="btn btn-success" target="_blank">Data JSON</a>
@@ -213,7 +217,7 @@ $appData = loadAppData();
                 </div>
             </div>
         <?php endforeach; ?>
-        
+
         <div class="routes-section">
             <h3>🗺️ Rute & Endpoint Tersedia</h3>
             <div class="route-list">

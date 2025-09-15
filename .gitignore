@@ -1,0 +1,21 @@
+# SiApp .gitignore
+
+# Database files (SleekDB)
+database/
+
+# Backup files
+*.backup.*
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+temp-*.php
+debug-*.php
+
+# Environment config (future use)
+.env
