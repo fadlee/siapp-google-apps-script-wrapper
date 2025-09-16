@@ -227,16 +227,10 @@ if (empty($route) || $route === 'index.php') {
             }
         }
     } else {
-        // No matching slug found - show 404
+        // No matching slug found - show 404 (do not expose private data)
         http_response_code(404);
-        header('Content-Type: application/json; charset=utf-8');
-
-        $availableSlugs = getAllSlugs($appData);
-        echo json_encode([
-            'error' => 'App not found',
-            'requested_slug' => $route,
-            'available_slugs' => $availableSlugs,
-            'message' => 'The requested app slug "' . $route . '" does not exist in data.json'
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        header('Content-Type: text/html; charset=utf-8');
+        echo '<h1>404 Not Found</h1>';
+        exit;
     }
 }
