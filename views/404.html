@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>404 - Halaman Tidak Ditemukan | SiApp</title>
+        <meta
+            name="description"
+            content="Maaf, halaman yang Anda cari tidak dapat ditemukan. Kembali ke beranda SiApp untuk menemukan aplikasi Apps Script yang Anda butuhkan."
+        />
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    "Helvetica Neue", Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                overflow-x: hidden;
+                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 0 20px;
+            }
+
+            .error-card {
+                background: white;
+                border-radius: 20px;
+                padding: 3rem 2rem;
+                text-align: center;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+                position: relative;
+                overflow: hidden;
+                animation: slideUp 0.8s ease-out;
+                margin-top: 2rem;
+                margin-bottom: 2rem;
+            }
+
+            .error-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 4px;
+                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            }
+
+            .error-number {
+                font-size: 8rem;
+                font-weight: 900;
+                color: transparent;
+                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                margin-bottom: 1rem;
+                line-height: 1;
+            }
+
+            .error-title {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: #333;
+                margin-bottom: 1rem;
+            }
+
+            .error-description {
+                font-size: 1.2rem;
+                color: #666;
+                margin-bottom: 2rem;
+                line-height: 1.6;
+            }
+
+            .search-suggestions {
+                background: #f8f9fa;
+                border-radius: 12px;
+                padding: 1.5rem;
+                margin: 2rem 0;
+                text-align: left;
+            }
+
+            .search-suggestions h3 {
+                color: #333;
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .suggestions-list {
+                list-style: none;
+            }
+
+            .suggestions-list li {
+                margin-bottom: 0.5rem;
+                padding-left: 1rem;
+                position: relative;
+                color: #666;
+            }
+
+            .suggestions-list li::before {
+                content: "💡";
+                position: absolute;
+                left: 0;
+            }
+
+            .cta-buttons {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-top: 2rem;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 1rem 2rem;
+                border-radius: 50px;
+                text-decoration: none;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                font-size: 1rem;
+                border: none;
+                cursor: pointer;
+            }
+
+            .btn-primary {
+                background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+                color: white;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(34, 197, 94, 0.3);
+            }
+
+            .btn-secondary {
+                background: transparent;
+                color: #22c55e;
+                border: 2px solid #22c55e;
+            }
+
+            .btn-secondary:hover {
+                background: #22c55e;
+                color: white;
+                transform: translateY(-2px);
+            }
+
+            .recent-apps {
+                margin-top: 2rem;
+                text-align: left;
+            }
+
+            .recent-apps h3 {
+                color: #333;
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .apps-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+            }
+
+            .app-item {
+                background: white;
+                border: 1px solid #e9ecef;
+                border-radius: 10px;
+                padding: 1rem;
+                text-decoration: none;
+                color: inherit;
+                transition: all 0.3s ease;
+                display: block;
+            }
+
+            .app-item:hover {
+                border-color: #22c55e;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .app-name {
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 0.25rem;
+            }
+
+            .app-slug {
+                font-size: 0.9rem;
+                color: #666;
+            }
+
+            .footer-links {
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid #e9ecef;
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .footer-links a {
+                color: #666;
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: color 0.3s;
+            }
+
+            .footer-links a:hover {
+                color: #22c55e;
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .error-number {
+                    font-size: 6rem;
+                }
+
+                .error-title {
+                    font-size: 2rem;
+                }
+
+                .error-description {
+                    font-size: 1rem;
+                }
+
+                .cta-buttons {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .btn {
+                    width: 200px;
+                }
+
+                .footer-links {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 1rem;
+                }
+
+                .error-card {
+                    padding: 2rem 1rem;
+                }
+            }
+
+            /* Animations */
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-in {
+                animation: slideUp 0.8s ease-out;
+            }
+
+            /* Fun floating elements */
+            .floating-elements {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+            }
+
+            .floating-element {
+                position: absolute;
+                opacity: 0.1;
+                animation: float 6s ease-in-out infinite;
+            }
+
+            .floating-element:nth-child(1) {
+                top: 20%;
+                left: 10%;
+                animation-delay: -0.5s;
+            }
+
+            .floating-element:nth-child(2) {
+                top: 60%;
+                right: 10%;
+                animation-delay: -2s;
+            }
+
+            .floating-element:nth-child(3) {
+                bottom: 20%;
+                left: 20%;
+                animation-delay: -3.5s;
+            }
+
+            @keyframes float {
+                0%,
+                100% {
+                    transform: translateY(0px) rotate(0deg);
+                }
+                25% {
+                    transform: translateY(-10px) rotate(5deg);
+                }
+                50% {
+                    transform: translateY(-20px) rotate(0deg);
+                }
+                75% {
+                    transform: translateY(-10px) rotate(-5deg);
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Floating background elements -->
+        <div class="floating-elements">
+            <div class="floating-element">🚀</div>
+            <div class="floating-element">💻</div>
+            <div class="floating-element">⚡</div>
+        </div>
+
+        <div class="container">
+            <div class="error-card">
+                <div class="error-number">404</div>
+                <h1 class="error-title">Oops! Halaman Tidak Ditemukan</h1>
+                <p class="error-description">
+                    Maaf, aplikasi atau halaman yang Anda cari sepertinya tidak
+                    ada di SiApp. Mungkin URL salah ketik atau aplikasi belum
+                    terdaftar dalam sistem kami.
+                </p>
+
+                <div class="search-suggestions">
+                    <h3>🔍 Apa yang bisa Anda lakukan?</h3>
+                    <ul class="suggestions-list">
+                        <li>Periksa kembali penulisan URL aplikasi</li>
+                        <li>
+                            Kembali ke beranda untuk melihat daftar aplikasi
+                        </li>
+                        <li>
+                            Gunakan panel admin untuk mendaftarkan aplikasi baru
+                        </li>
+                        <li>
+                            Hubungi administrator jika aplikasi seharusnya
+                            tersedia
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="/" class="btn btn-primary"
+                        >🏠 Kembali ke Beranda</a
+                    >
+                </div>
+
+                <div class="recent-apps" id="recentApps" style="display: none">
+                    <h3>📱 Aplikasi Populer</h3>
+                    <div class="apps-grid" id="appsGrid">
+                        <!-- Apps will be loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <a href="/">Beranda</a>
+                    <a href="/form/">Daftar Aplikasi</a>
+                    <a href="/docs-apps-script.html">Panduan</a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            // Try to load some sample apps for suggestions
+            async function loadSampleApps() {
+                try {
+                    const response = await fetch("/data.json");
+                    if (response.ok) {
+                        const data = await response.json();
+                        const apps = Array.isArray(data)
+                            ? data.slice(0, 4)
+                            : Object.values(data).slice(0, 4);
+
+                        if (apps.length > 0) {
+                            const appsGrid =
+                                document.getElementById("appsGrid");
+                            const recentApps =
+                                document.getElementById("recentApps");
+
+                            appsGrid.innerHTML = apps
+                                .map(
+                                    (app) => `
+                            <a href="/${app.APP_SLUG || app.slug}/" class="app-item">
+                                <div class="app-name">${app.APP_NAME || app.name || "Aplikasi"}</div>
+                                <div class="app-slug">/${app.APP_SLUG || app.slug}</div>
+                            </a>
+                        `,
+                                )
+                                .join("");
+
+                            recentApps.style.display = "block";
+                        }
+                    }
+                } catch (error) {
+                    console.log("Could not load sample apps:", error);
+                    // Silently fail - not critical for 404 page
+                }
+            }
+
+            // Load sample apps when page loads
+            document.addEventListener("DOMContentLoaded", loadSampleApps);
+
+            // Add some fun interactivity
+            document.querySelectorAll(".btn").forEach((btn) => {
+                btn.addEventListener("mouseenter", () => {
+                    btn.style.transform = "translateY(-2px) scale(1.02)";
+                });
+
+                btn.addEventListener("mouseleave", () => {
+                    btn.style.transform = "translateY(0) scale(1)";
+                });
+            });
+
+            // Track 404 errors (optional analytics)
+            if (typeof gtag !== "undefined") {
+                gtag("event", "page_view", {
+                    page_title: "404 Not Found",
+                    page_location: window.location.href,
+                });
+            }
+        </script>
+    </body>
+</html>

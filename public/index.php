@@ -21,6 +21,28 @@ function loadAppData() {
     }
 }
 
+// Function to serve 404 page
+function serve404($isAsset = false, $message = null) {
+    http_response_code(404);
+    
+    if ($isAsset) {
+        // For assets, return simple text response
+        echo $message ? $message : '// Asset not found';
+        return;
+    }
+    
+    // For HTML pages, try to serve beautiful 404 page
+    header('Content-Type: text/html; charset=utf-8');
+    $notFoundPage = __DIR__ . '/../views/404.html';
+    
+    if (file_exists($notFoundPage)) {
+        readfile($notFoundPage);
+    } else {
+        // Fallback if 404.html doesn't exist
+        echo '<h1>404 Not Found</h1><p>The page you are looking for could not be found.</p>';
+    }
+}
+
 // Load and process HTML template
 function loadTemplate($templatePath, $data) {
     if (!file_exists($templatePath)) {
@@ -154,8 +176,7 @@ if (preg_match('/^([a-zA-Z0-9-_]+)\/(manifest\.json|icons\/.*|sw\.js)$/', $route
     }
 
     // Asset not found
-    http_response_code(404);
-    echo '// Asset not found: ' . htmlspecialchars($route);
+    serve404(true, '// Asset not found: ' . htmlspecialchars($route));
     exit;
 }
 
@@ -181,8 +202,7 @@ if (empty($route) || $route === 'index.php') {
         readfile($docsFile);
         exit;
     } else {
-        http_response_code(404);
-        echo 'Documentation not found';
+        serve404(false);
         exit;
     }
 } else {
@@ -228,9 +248,7 @@ if (empty($route) || $route === 'index.php') {
         }
     } else {
         // No matching slug found - show 404 (do not expose private data)
-        http_response_code(404);
-        header('Content-Type: text/html; charset=utf-8');
-        echo '<h1>404 Not Found</h1>';
+        serve404(false);
         exit;
     }
 }
